@@ -47,10 +47,10 @@ down the rows. Extra values are ignored and missing values are assumed to be 0.
 `equal(u, v)` - Checks if two vectors or matrices are equal to each other.  
 `add(u, v)` - Element-wise addition of two vectors or matrices.  
 `subtract(u, v)` - Element-wise subtraction of two vectors or matrices.  
-`mult(u, v)` - Element-wise multiple of two vectors or matrices.  
+`mult(u, v)` - Element-wise multiply of two vectors or matrices.  
 `scale(s, u)` - Scale a vector or matrix `u` by a constant scale factor `s`.  
 `flatten(v)` - Flattens a vector, matrix, or array of vectors into a `Float32Array`. Matrices are
-flattened down columns than across rows.
+flattened down columns then across rows.
 
 ### Matrix Functions
 
