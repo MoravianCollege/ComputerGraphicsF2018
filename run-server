@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Check if installed
+twist=$(which twist)
+if [ ! -x "$twist" ]; then
+   echo "Installing Twisted server..."
+   pip install twisted service_identity google-auth-oauthlib
+fi
+
+# Run the server
+twist web --path=.
