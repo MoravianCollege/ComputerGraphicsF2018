@@ -44,63 +44,43 @@ down the rows. Extra values are ignored and missing values are assumed to be 0.
 
 ### Vector/Matrix Functions
 
-`equal(u, v)` - Checks if two vectors or matrices are equal to each other.
-
-`add(u, v)` - Element-wise addition of two vectors or matrices.
-
-`subtract(u, v)` - Element-wise subtraction of two vectors or matrices.
-
-`mult(u, v)` - Element-wise multiple of two vectors or matrices.
-
-`scale(s, u)` - Scale a vector or matrix `u` by a constant scale factor `s`.
-
+`equal(u, v)` - Checks if two vectors or matrices are equal to each other.  
+`add(u, v)` - Element-wise addition of two vectors or matrices.  
+`subtract(u, v)` - Element-wise subtraction of two vectors or matrices.  
+`mult(u, v)` - Element-wise multiple of two vectors or matrices.  
+`scale(s, u)` - Scale a vector or matrix `u` by a constant scale factor `s`.  
 `flatten(v)` - Flattens a vector, matrix, or array of vectors into a `Float32Array`. Matrices are
 flattened down columns than across rows.
 
 ### Matrix Functions
 
-`transpose(m)` - Create and return the transpose of the matrix.
-
-`printm(m)` - Print the matrix to the console.
-
-`det(m)` - Calculate the determinant of the matrix.
-
+`transpose(m)` - Create and return the transpose of the matrix.  
+`printm(m)` - Print the matrix to the console.  
+`det(m)` - Calculate the determinant of the matrix.  
 `inverse(m)` - Calculate the inverse of the matrix.
 
 ### Vector Functions
 
-`negate(u)` - Take negative of each element.
-
-`dot(u, v)` - Dot product of two vectors.
-
-`cross(u, v)` - Cross product of two vectors.
-
-`length(u)` - Length/magnitude of a vector (dot product with itself).
-
+`negate(u)` - Take negative of each element.  
+`dot(u, v)` - Dot product of two vectors.  
+`cross(u, v)` - Cross product of two vectors.  
+`length(u)` - Length/magnitude of a vector (dot product with itself).  
 `normalize(u, [excludeLastComponent])` - Normalize the vector sum that its length/magntitude is 1.
 If `excludeLastComponent` is provided and is true the last element is not included in the
-normalization.
-
-`mix(u, v, s)` - Scale and add two vectors together, equivilent to `add(scale(1.0-s, u), scale(s, v))`.
-
+normalization.  
+`mix(u, v, s)` - Scale and add two vectors together, equivilent to `add(scale(1.0-s, u), scale(s, v))`.  
 `sizeof[...]` - Dictionary of byte sizes of the results of `Float32Array` for the given vector or
 matrix type. The key is one of `vec2`, `vec3`, `vec4`, `mat2`, `mat3`, or `mat4`.
 
 ### Affine Transformation Matrix Creators
 `translate(x, y, z)` - Create translation matrix. Can also call with a single, length-3, vector
-argument.
-
+argument.  
 `rotate(angle, axis)` - Create rotation matrix. `angle` is given in degrees. `axis` is either a
-single value or length-3 vector defining the axis to rotate around.
-
-`rotateX(theta)` - Create rotation matrix. `theta` is given in degrees around the X-axis
-
-`rotateY(theta)` - Create rotation matrix. `theta` is given in degrees around the Y-axis.
-
-`rotateZ(theta)` - Create rotation matrix. `theta` is given in degrees around the Z-axis.
-
-`scalem(x, y, z)` - Create scale matrix. Can also call with a single, length-3, vector argument.
-
+single value or length-3 vector defining the axis to rotate around.  
+`rotateX(theta)` - Create rotation matrix. `theta` is given in degrees around the X-axis.  
+`rotateY(theta)` - Create rotation matrix. `theta` is given in degrees around the Y-axis.  
+`rotateZ(theta)` - Create rotation matrix. `theta` is given in degrees around the Z-axis.  
+`scalem(x, y, z)` - Create scale matrix. Can also call with a single, length-3, vector argument.  
 `lookAt(eye, at, up)` - Create model-view matrix that is defined by the position of `eye` that is
 looking at the position `at` and oriented with the vector `up`. All three arguments are length-3
 vectors.
@@ -108,8 +88,7 @@ vectors.
 ### Projection Matrix Creators
 
 `ortho(left, right, bottom, top, near, far)` - Create orthographic view matrix with the defined
-sides of the cube.
-
+sides of the cube.  
 `perspective(fovy, aspect, near, far)` - Create perspective view matrix with the given
 field-of-view angle along y, the aspect ratio, and near/far clipping planes.
 
