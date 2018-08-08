@@ -32,17 +32,14 @@ window.addEventListener('load', function init() {
 	// Vertex Shader: simplest possible
 	let vertShdr = compileShader(gl, gl.VERTEX_SHADER, `
 		attribute vec4 vPosition;
-		void main()
-		{
+		void main() {
 			gl_Position = vPosition;
 		}
 	`);
 	// Fragment Shader: simplest possible, chosen color is red for each point
 	let fragShdr = compileShader(gl, gl.FRAGMENT_SHADER, `
-		precision mediump float;
-		void main()
-		{
-			gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+		void main() {
+			gl_FragColor = vec4(1, 0, 0, 1);
 		}
 	`);
 
