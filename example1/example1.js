@@ -39,7 +39,7 @@ window.addEventListener('load', function init() {
 	// Fragment Shader: simplest possible, chosen color is red for each point
 	let fragShdr = compileShader(gl, gl.FRAGMENT_SHADER, `
 		void main() {
-			gl_FragColor = vec4(1, 0, 0, 1);
+			gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 		}
 	`);
 

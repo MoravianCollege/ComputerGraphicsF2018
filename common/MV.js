@@ -137,12 +137,12 @@ function mat4() {
 //----------------------------------------------------------------------------
 
 const sizeof = {
-	'vec2' : new Float32Array(flatten(vec2())).byteLength,
-	'vec3' : new Float32Array(flatten(vec3())).byteLength,
-	'vec4' : new Float32Array(flatten(vec4())).byteLength,
-	'mat2' : new Float32Array(flatten(mat2())).byteLength,
-	'mat3' : new Float32Array(flatten(mat3())).byteLength,
-	'mat4' : new Float32Array(flatten(mat4())).byteLength
+	'vec2' : flatten(vec2()).byteLength,
+	'vec3' : flatten(vec3()).byteLength,
+	'vec4' : flatten(vec4()).byteLength,
+	'mat2' : flatten(mat2()).byteLength,
+	'mat3' : flatten(mat3()).byteLength,
+	'mat4' : flatten(mat4()).byteLength
 };
 
 //----------------------------------------------------------------------------

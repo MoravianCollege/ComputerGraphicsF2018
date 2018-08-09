@@ -10,11 +10,11 @@ functions are modified to be cross-browser.
 Functions
 ---------
 
-`WebGLUtils.setupWebGL(canvas, [opt_attribs])` -  Creates a webgl context. If creation fails it
+`WebGLUtils.setupWebGL(canvas, [opt_attribs])` -  Creates a WebGL context. If creation fails it
 will change the contents of the container of the `<canvas>` tag to an error message with the correct
 links for WebGL. Returns the created context.
 
-`WebGLUtils.create3DContext(canvas, [opt_attribs])` - Creates a webgl context without handling of
+`WebGLUtils.create3DContext(canvas, [opt_attribs])` - Creates a WebGL context without handling of
 errors. Returns the created context.
 
 
@@ -64,10 +64,10 @@ flattened down columns then across rows.
 `length(u)` - Length/magnitude of a vector (square root of dot product with itself).
 `dot(u, v)` - Dot product of two vectors.
 `cross(u, v)` - Cross product of two vectors.
-`normalize(u, [excludeLastComponent])` - Normalize the vector sum that its length/magntitude is 1.
+`normalize(u, [excludeLastComponent])` - Normalize the vector sum that its length/magnitude is 1.
 If `excludeLastComponent` is provided and is true the last element is not included in the
 normalization.
-`mix(u, v, s)` - Scale and add two vectors together, equivilent to `add(scale(1-s, u), scale(s, v))`.
+`mix(u, v, s)` - Scale and add two vectors together, equivalent to `add(scale(1-s, u), scale(s, v))`.
 `sizeof[...]` - Dictionary of byte sizes of the results of `Float32Array` for the given vector or
 matrix type. The key is one of `vec2`, `vec3`, `vec4`, `mat2`, `mat3`, or `mat4`.
 
@@ -75,7 +75,7 @@ matrix type. The key is one of `vec2`, `vec3`, `vec4`, `mat2`, `mat3`, or `mat4`
 `translate(x, y, z)` - Create translation matrix. Can also call with a single, length-3, vector
 argument.
 `rotate(angle, axis1, axis2, axis3)` - Create rotation matrix. `angle` is given in degrees. The axis
-can also be given as a singl, length-3, vector argument.
+can also be given as a single, length-3, vector argument.
 `rotateX(theta)` - Create rotation matrix. `theta` is given in degrees around the X-axis.
 `rotateY(theta)` - Create rotation matrix. `theta` is given in degrees around the Y-axis.
 `rotateZ(theta)` - Create rotation matrix. `theta` is given in degrees around the Z-axis.
