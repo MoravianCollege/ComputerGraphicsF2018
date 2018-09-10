@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Give the page a title - make sure it is descriptive! -->
+        <title>Rotating Square with Keyboard Control</title>
+
+        <!-- Load utilities and functions -->
+        <script src="../common/webgl-utils.js"></script>
+        <script src="../common/MV.js"></script>
+        <script src="../common/init-shaders.js"></script>
+
+        <!-- Load the code for this example -->
+        <script src="rotating-keyboard.js"></script>
+    </head>
+    <body>
+        <!-- Define the canvas to use for the WebGL example -->
+        <canvas id="gl-canvas" width="400" height="400">
+            Your browser doesn't support HTML5 canvas element
+        </canvas>
+        <div>
+            Speed: <input type="range" id="speed" step="0.01" min="-3" max="3" value="0">
+        </div>
+    </body>
+</html>
