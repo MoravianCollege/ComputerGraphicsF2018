@@ -164,7 +164,8 @@ function equal(u, v) {
 function _binaryOp(u, v, op) {
 	if (u.length !== v.length) { throw "different dimensions"; }
 	if (u.matrix && v.matrix) {
-		let result = u.map((x, i) => x.map((y, j) => op(x, v[i][j])));
+		if (u.some((x, i) => x.length !== v[i].length)) { throw "different dimensions"; }
+		let result = u.map((x, i) => x.map((y, j) => op(y, v[i][j])));
 		result.matrix = true;
 		return result;
 	} else if (!u.matrix && !v.matrix) {
@@ -177,8 +178,27 @@ function _binaryOp(u, v, op) {
 function add(u, v) { return _binaryOp(u, v, (a, b) => a + b); }
 function subtract(u, v) { return _binaryOp(u, v, (a, b) => a - b); }
 function mult(u, v) {
-	if (u.matrix && !v.matrix && (u.length === v.length)) {
-		return v.map((x) => x.reduce((sum, y, j) => sum + y * v[j]));
+	if (u.length !== v.length) { throw "different dimensions"; }
+	if (u.matrix) {
+		if (v.matrix) {
+			// matrix multiplication (assumes square matrices)
+			let len = u.length;
+			if (u.some((x) => x.length !== len) || v.some((x) => x.length !== len)) { throw "different dimensions"; }
+			let result = [];
+			for (let i = 0; i < len; ++i) {
+				let row = [];
+				for (let j = 0; j < len; ++j) {
+					row.push(u[i].reduce((sum, x, k) => sum + x * v[k][j], 0));
+				}
+				result.push(row);
+			}
+			result.matrix = true;
+			return result;
+		} else {
+			// matrix-vector multiplication
+			if (u.some((x) => x.length !== u.length)) { throw "different dimensions"; }
+			return u.map((x) => x.reduce((sum, y, j) => sum + y * v[j], 0));
+		}
 	}
 	return _binaryOp(u, v, (a, b) => a * b);
 }
