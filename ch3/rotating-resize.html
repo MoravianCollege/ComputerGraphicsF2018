@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Give the page a title - make sure it is descriptive! -->
+        <title>Rotating Square with Keyboard Control and Resizing</title>
+
+        <!-- Load utilities and functions -->
+        <script src="../common/webgl-utils.js"></script>
+        <script src="../common/MV.js"></script>
+        <script src="../common/init-shaders.js"></script>
+
+        <!-- Load the code for this example -->
+        <script src="rotating-resize.js"></script>
+    </head>
+    <body style="padding:0;margin:0;">
+        <!-- Define the canvas to use for the WebGL example -->
+        <canvas id="gl-canvas">Your browser doesn't support HTML5 canvas element</canvas>
+        <!-- Toolbar that is shown on top of the lower-left corner of the canvas with a semi-trasparent background -->
+        <div style="position:absolute;left:0;bottom:0;background:rgba(255,255,255,0.5);">
+            Speed: <input style="vertical-align:middle" type="range" id="speed" step="0.01" min="-3" max="3" value="0">
+        </div>
+    </body>
+</html>
