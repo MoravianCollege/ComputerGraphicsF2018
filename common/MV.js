@@ -207,7 +207,7 @@ function negate(u) {
 //
 
 function transpose(m) {
-	let result = m.map((x, i) => x.map((y, j) => m[j][j]));
+	let result = m.map((x, i) => x.map((y, j) => m[i][j]));
 	result.matrix = true;
 	return result;
 }
@@ -347,14 +347,14 @@ function translate(x, y, z) {
 
 function rotate(angle, axis) {
 	if (!Array.isArray(axis)) { axis = [ arguments[1], arguments[2], arguments[3] ]; }
-	let {x, y, z} = normalize(axis);
+	let [x, y, z] = normalize(axis);
 	let s = Math.sin(radians(angle));
 	let c = Math.cos(radians(angle)), omc = 1 - c;
 	return mat4(
 		x*x*omc + c,   x*y*omc - z*s, x*z*omc + y*s, 0,
 		x*y*omc + z*s, y*y*omc + c,   y*z*omc - x*s, 0,
 		x*z*omc - y*s, y*z*omc + x*s, z*z*omc + c,   0,
-		0, 0, 0, 0);
+		0, 0, 0, 1);
 }
 
 function rotateX(theta) {
