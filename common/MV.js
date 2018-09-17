@@ -227,7 +227,7 @@ function negate(u) {
 //
 
 function transpose(m) {
-	let result = m.map((x, i) => x.map((y, j) => m[i][j]));
+	let result = m.map((x, i) => x.map((y, j) => m[j][i]));
 	result.matrix = true;
 	return result;
 }
