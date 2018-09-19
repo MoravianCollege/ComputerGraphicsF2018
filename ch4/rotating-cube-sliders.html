@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Give the page a title - make sure it is descriptive! -->
+        <title>Cube rotating around &gt;1,1,1&lt; with controllable speed with sliders</title>
+
+        <!-- Load utilities and functions -->
+        <script src="../common/webgl-utils.js"></script>
+        <script src="../common/MV.js"></script>
+        <script src="../common/init-shaders.js"></script>
+
+        <!-- Load the code for this example -->
+        <script src="rotating-cube-sliders.js"></script>
+    </head>
+    <body>
+        <!-- Define the canvas to use for the WebGL example -->
+        <canvas id="gl-canvas" width="400" height="400">
+            Your browser doesn't support HTML5 canvas element
+        </canvas>
+        <div>
+            X: <input type="range" id="x-speed" min=-180 max=180 step=1 value=0>
+            Y: <input type="range" id="y-speed" min=-180 max=180 step=1 value=0>
+            Z: <input type="range" id="z-speed" min=-180 max=180 step=1 value=0>
+        </div>
+    </body>
+</html>
