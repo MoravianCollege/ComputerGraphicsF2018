@@ -46,7 +46,7 @@ window.addEventListener('load', function init() {
 	gl.clearColor(1.0, 1.0, 1.0, 0.0); // setup the background color with red, green, blue, and alpha
 	gl.enable(gl.DEPTH_TEST); // things further away will be hidden
 
-	// Create a tetrahedron
+	// Create a cube
 	cube(
 		vec3(-0.5, -0.5, -0.5),
 		vec3( 0.5, -0.5, -0.5),
