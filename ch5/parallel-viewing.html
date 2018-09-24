@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Give the page a title - make sure it is descriptive! -->
+        <title>Parallel Projection Viewing Demo</title>
+
+        <!-- Load utilities and functions -->
+        <script src="../common/webgl-utils.js"></script>
+        <script src="../common/MV.js"></script>
+        <script src="../common/init-shaders.js"></script>
+        <script src="../common/objloader.js"></script>
+
+        <!-- Load the code for this example -->
+        <script src="parallel-viewing.js"></script>
+    </head>
+    <body style="padding:0;margin:0;overflow:hidden;">
+        <!-- Define the canvas to use for the WebGL example -->
+        <canvas id="gl-canvas">
+            Your browser doesn't support HTML5 canvas element
+        </canvas>
+        <div style="margin:10px;position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,0.5)">
+            <div>
+                <b>Orhtographic:</b>
+                <input type="button" id="front" value="Front">
+                <input type="button" id="left" value="Left">
+                <input type="button" id="top" value="Top">
+                <input type="button" id="back" value="Back">
+                <input type="button" id="right" value="Right">
+                <input type="button" id="bottom" value="Bottom">
+            </div>
+            <div>
+                <b>Axonometric:</b>
+                <input type="button" id="isometric" value="Isometric">
+                <input type="button" id="dimetric" value="Dimetric">
+                <input type="button" id="trimetric" value="Trimetric">
+            </div>
+            <div>
+                <b>Oblique:</b>
+                <input type="button" id="cavalier" value="Cavalier">
+                <input type="button" id="cabinet" value="Cabinet">
+                <input type="button" id="military" value="Military">
+            </div>
+        </div>
+    </body>
+</html>
