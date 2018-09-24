@@ -163,7 +163,6 @@ function onMouseMove(evt) {
 		let coord = mouse_coords(evt);
 		thetas[1] = initial_thetas[1] - (coord[0] - initial_coord[0]) * 180;
 		thetas[0] = initial_thetas[0] - (coord[1] - initial_coord[1]) * -180;
-		render();
 	}
 }
 
@@ -177,7 +176,6 @@ function onMouseUp(evt) {
 	thetas[0] = initial_thetas[0] - (coord[1] - initial_coord[1]) * -180;
 	this.removeEventListener('mousemove', onMouseMove);
 	this.removeEventListener('mouseup', onMouseUp);
-	render();
 }
 
 /**

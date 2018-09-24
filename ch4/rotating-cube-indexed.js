@@ -1,12 +1,12 @@
 // This is a WebGL example that draws a cube with each face a different color. The cube is
-// rotated with the mouse clicking and dragging.
+// rotated with the mouse clicking and dragging. The drawing is done with an index array.
 /* exported cube tetrahedron */
 
 // Global WebGL context variable
 let gl;
 
 // Global list of vertices being drawn
-let verts = [];
+let verts = [], inds = [];
 
 // Location of the transform uniform
 let transform_loc;
@@ -56,20 +56,17 @@ window.addEventListener('load', function init() {
 		vec3( 0.5,  0.5,  0.5),
 		vec3( 0.5, -0.5,  0.5),
 		vec3(-0.5, -0.5,  0.5),
-		verts);
+		verts, inds);
 	let colors = [];
 	let red = vec4(1.0, 0.0, 0.0, 1.0);
 	let grn = vec4(0.0, 1.0, 0.0, 1.0);
 	let blu = vec4(0.0, 0.0, 1.0, 1.0);
 	let org = vec4(1.0, 0.5, 0.0, 1.0);
 	let ylw = vec4(1.0, 1.0, 0.0, 1.0);
+	let mag = vec4(1.0, 0.0, 1.0, 1.0);
+	let cyn = vec4(0.0, 1.0, 1.0, 1.0);
 	let blk = vec4(0.0, 0.0, 0.0, 1.0);
-	colors.push(red, red, red, red, red, red);
-	colors.push(grn, grn, grn, grn, grn, grn);
-	colors.push(blu, blu, blu, blu, blu, blu);
-	colors.push(org, org, org, org, org, org);
-	colors.push(ylw, ylw, ylw, ylw, ylw, ylw);
-	colors.push(blk, blk, blk, blk, blk, blk);
+	colors.push(red, grn, blu, org, ylw, blk, mag, cyn);
 
 	// Compile shaders
 	let vertShdr = compileShader(gl, gl.VERTEX_SHADER, `
@@ -110,6 +107,10 @@ window.addEventListener('load', function init() {
 	gl.vertexAttribPointer(vColor, 4, gl.FLOAT, false, 0, 0); // associate the buffer with "vColor" making sure it knows it is length-4 vectors of floats
 	gl.enableVertexAttribArray(vColor); // enable this set of data
 
+	bufferId = gl.createBuffer();
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bufferId);
+	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(inds), gl.STATIC_DRAW); // load the flattened data into the buffer
+
 	// Get the location of the transform uniform
 	transform_loc = gl.getUniformLocation(program, 'transform');
 
@@ -140,7 +141,7 @@ function render() {
 
 	// Render
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-	gl.drawArrays(gl.TRIANGLES, 0, verts.length);
+	gl.drawElements(gl.TRIANGLES, inds.length, gl.UNSIGNED_SHORT, 0);
 
 	// Animate
 	window.requestAnimationFrame(render);
@@ -206,7 +207,6 @@ function onMouseUp(evt) {
 	}
 	this.removeEventListener('mousemove', onMouseMove);
 	this.removeEventListener('mouseup', onMouseUp);
-	render();
 }
 
 /**
@@ -238,13 +238,15 @@ function rect(a, b, c, d, pts) {
  * Adds a cube to verts defined by the vertices a, b, c, d, e, f, g, h with
  * abcd and efgh as opposite faces of the cube.
  */
-function cube(a, b, c, d, e, f, g, h, pts) {
-	rect(a, b, c, d, pts);
-	rect(e, f, g, h, pts);
-	rect(a, d, e, h, pts);
-	rect(c, d, e, f, pts);
-	rect(b, c, f, g, pts);
-	rect(a, b, g, h, pts);
+function cube(a, b, c, d, e, f, g, h, pts, inds_) {
+	let off = pts.length;
+	pts.push(a, b, c, d, e, f, g, h);
+	rect(off+0, off+1, off+2, off+3, inds_);
+	rect(off+4, off+5, off+6, off+7, inds_);
+	rect(off+0, off+3, off+4, off+7, inds_);
+	rect(off+2, off+3, off+4, off+5, inds_);
+	rect(off+1, off+2, off+5, off+6, inds_);
+	rect(off+0, off+1, off+6, off+7, inds_);
 }
 
 /**
