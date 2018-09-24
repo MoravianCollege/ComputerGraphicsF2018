@@ -355,7 +355,7 @@ function flatten(v) {
 //
 
 function translate(x, y, z) {
-	if (Array.isArray(x) && x.length === 3) { x = x[0]; y = x[1]; z = x[2]; }
+	if (Array.isArray(x) && x.length === 3) { y = x[1]; z = x[2]; x = x[0]; }
 	let result = mat4();
 	result[0][3] = x;
 	result[1][3] = y;
@@ -409,7 +409,7 @@ function rotateZ(theta) {
 //----------------------------------------------------------------------------
 
 function scalem(x, y, z) {
-	if (Array.isArray(x) && x.length === 3) { x = x[0]; y = x[1]; z = x[2]; }
+	if (Array.isArray(x) && x.length === 3) { y = x[1]; z = x[2]; x = x[0]; }
 	let result = mat4();
 	result[0][0] = x;
 	result[1][1] = y;
@@ -467,10 +467,11 @@ function ortho(left, right, bottom, top, near, far) {
 //----------------------------------------------------------------------------
 
 function perspective(fovy, aspect, near, far) {
+	let d = far - near;
 	let f = 1 / Math.tan(radians(fovy) / 2);
 	return mat4(
 		f/aspect, 0,  0,  0,
 		0,        f,  0,  0,
-		0,        0,  1, -2*near*far/(far-near),
+		0,        0,  -(near+far)/d, -2*near*far/d,
 		0,        0, -1,  0);
 }
