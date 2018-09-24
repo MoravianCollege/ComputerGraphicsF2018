@@ -111,3 +111,33 @@ the `XMLHttpRequest` object (so `this.responseText` is the file's contents).
 
 `linkProgram(gl, shaders)` - Links several shaders into a WebGL program. `gl` is a WebGL context
 object and `shaders` is an array of shaders returned by `compileShader`.
+
+
+
+objloader.js
+============
+
+`load_obj(url, ondone, onerror)` - Loads a Wavefront OBJ file asynchronously. The file is loaded
+from the relative or absolute `url` given. Once the model has completely loaded then the function
+`ondone` is called with the `verts`, `texCoords`, `normals`, `inds`, and `objs`. If there is an
+error loading then the optional `onerror` function is called (which defaults to just writing an
+error message in the console).
+
+For the `ondone` function, the arguments are as follows:
+ * `verts`: array of `vec3`s
+ * `texCoords`: either `null` (if no object has a texture) or array of `vec2`s
+ * `normals`: array of `vec3`s
+ * `inds`: array of integers
+ * `objs`: an array of objects
+
+Each object in the array has 2 properties: `name` (which could be `null`) and `parts`. The `parts`
+is an array of objects that each have the following properties:
+ * `start`: the first index from `inds` to start drawing from
+ * `count`: the number of indices to draw using
+ * `material`: an object that has at least the following properties:
+    * Ka: `vec3` for the ambient material color
+    * Kd: `vec3` for the diffuse material color
+    * Ks: `vec3` for the specular material color
+    * d:  number for the alpha/opacity of the material
+    * Ns: number for the material shininess coefficent
+    See the MTL manual for more information on other properties and specifics: http://paulbourke.net/dataformats/mtl/

@@ -20,7 +20,8 @@
         "translate": false, "rotate": false, "rotateX": false, "rotateY": false, "rotateZ": false, "scalem": false,
         "lookAt": false,
         "ortho": false, "perspective": false,
-        "loadFile": false, "compileShader": false, "linkProgram": false
+        "loadFile": false, "compileShader": false, "linkProgram": false,
+        "load_obj": false
     },
     "rules": {
         "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
