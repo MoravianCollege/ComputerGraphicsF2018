@@ -6,7 +6,7 @@
 let gl;
 
 // Global list of vertices being drawn
-let verts = [], inds = [];
+let inds = [];
 
 // Location of the transform uniform
 let transform_loc;
@@ -47,6 +47,7 @@ window.addEventListener('load', function init() {
 	gl.enable(gl.DEPTH_TEST); // things further away will be hidden
 
 	// Create a cube
+	let verts = [];
 	cube(
 		vec3(-0.5, -0.5, -0.5),
 		vec3( 0.5, -0.5, -0.5),
