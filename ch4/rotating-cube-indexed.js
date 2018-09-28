@@ -108,6 +108,7 @@ window.addEventListener('load', function init() {
 	gl.vertexAttribPointer(vColor, 4, gl.FLOAT, false, 0, 0); // associate the buffer with "vColor" making sure it knows it is length-4 vectors of floats
 	gl.enableVertexAttribArray(vColor); // enable this set of data
 
+	// Upload the indices
 	bufferId = gl.createBuffer();
 	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bufferId);
 	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(inds), gl.STATIC_DRAW); // load the flattened data into the buffer
@@ -236,8 +237,8 @@ function rect(a, b, c, d, pts) {
 }
 
 /**
- * Adds a cube to verts defined by the vertices a, b, c, d, e, f, g, h with
- * abcd and efgh as opposite faces of the cube.
+ * Adds a cube to points/indices defined by the vertices a, b, c, d, e, f, g, h
+ * with abcd and efgh as opposite faces of the cube.
  */
 function cube(a, b, c, d, e, f, g, h, pts, inds_) {
 	let off = pts.length;
