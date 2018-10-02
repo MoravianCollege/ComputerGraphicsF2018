@@ -18,7 +18,7 @@ function load_obj(url, ondone, onerror) {
 	 * parts is an array of objects that each have the properties:
 	 *  - start: the first index from inds to start drawing from
 	 *  - count: the number of indices to draw using
-	 *  - material: and object that has at least the following properties:
+	 *  - material: an object that has at least the following properties:
 	 *      - Ka: vec3 for the ambient material color
 	 *      - Kd: vec3 for the diffuse material color
 	 *      - Ks: vec3 for the specular material color
@@ -26,6 +26,10 @@ function load_obj(url, ondone, onerror) {
 	 *      - Ns: number for the material shininess coefficent
 	 *      See the MTL manual for more information on other properties and
 	 *      specifics: http://paulbourke.net/dataformats/mtl/
+	 *
+	 * Note: several OBJ features are ignored, including groups (g), smoothing (s), parameter
+	 * vertices (vp), lines (l), non-triangular faces, or any of the uncommon geometries such as
+	 * Taylor or B-splines.
 	 */
 	onerror = onerror || function () { console.error('Failed to load OBJ file '+url); };
 	_load_file(url, function obj_loader() {
