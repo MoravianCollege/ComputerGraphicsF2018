@@ -206,7 +206,6 @@ function onMouseUp(evt) {
 	}
 	this.removeEventListener('mousemove', onMouseMove);
 	this.removeEventListener('mouseup', onMouseUp);
-	render();
 }
 
 /**
