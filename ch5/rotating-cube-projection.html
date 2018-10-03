@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Give the page a title - make sure it is descriptive! -->
+        <title>Cube Rotating with Switchable Projection</title>
+
+        <!-- Load utilities and functions -->
+        <script src="../common/webgl-utils.js"></script>
+        <script src="../common/MV.js"></script>
+        <script src="../common/init-shaders.js"></script>
+
+        <!-- Load the code for this example -->
+        <script src="rotating-cube-projection.js"></script>
+    </head>
+    <body style="padding:0;margin:0;overflow:hidden;">
+        <!-- Define the canvas to use for the WebGL example -->
+        <canvas id="gl-canvas" style="text-align:center;">
+            Your browser doesn't support HTML5 canvas element
+        </canvas>
+        <div style="background-color:rgba(255, 255, 255, 0.5);position:absolute;right:0;bottom:0;padding:1em">
+          <label for="viewing-mode"><input type="checkbox" id="viewing-mode"> Perspective</label>
+        </div>
+    </body>
+</html>
