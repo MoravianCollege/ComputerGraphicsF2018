@@ -245,7 +245,7 @@ function onWheel(evt) {
 }
 
 /**
- * Make the canvas fit the window (but stay a square)
+ * Make the canvas fit the window
  */
 function onResize() {
 	let w = window.innerWidth, h = window.innerHeight;
