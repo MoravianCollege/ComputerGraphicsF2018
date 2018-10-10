@@ -188,8 +188,8 @@ function onMouseMove(evt) {
 			thetas[1] = initial_thetas[1] - (coord[0] - initial_coord[0]) * 180;
 			thetas[0] = initial_thetas[0] - (coord[1] - initial_coord[1]) * -180;
 		} else {
-			position[0] = initial_pos[1] + (coord[0] - initial_coord[0]);
-			position[1] = initial_pos[0] + (coord[1] - initial_coord[1]);
+			position[0] = initial_pos[0] + (coord[0] - initial_coord[0]);
+			position[1] = initial_pos[1] + (coord[1] - initial_coord[1]);
 		}
 	}
 }
@@ -204,8 +204,8 @@ function onMouseUp(evt) {
 		thetas[1] = initial_thetas[1] - (coord[0] - initial_coord[0]) * 180;
 		thetas[0] = initial_thetas[0] - (coord[1] - initial_coord[1]) * -180;
 	} else {
-		position[0] = initial_pos[1] + (coord[0] - initial_coord[0]);
-		position[1] = initial_pos[0] + (coord[1] - initial_coord[1]);
+		position[0] = initial_pos[0] + (coord[0] - initial_coord[0]);
+		position[1] = initial_pos[1] + (coord[1] - initial_coord[1]);
 	}
 	this.removeEventListener('mousemove', onMouseMove);
 	this.removeEventListener('mouseup', onMouseUp);
