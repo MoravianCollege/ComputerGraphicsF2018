@@ -288,13 +288,11 @@ function dot(u, v) {
 }
 
 function cross(u, v) {
-	if (!Array.isArray(u) || u.length < 3) { throw "cross(): first argument is not a vector of at least 3"; }
-	if (!Array.isArray(v) || v.length < 3) { throw "cross(): second argument is not a vector of at least 3"; }
-	return [
-		u[1]*v[2] - u[2]*v[1],
-		u[2]*v[0] - u[0]*v[2],
-		u[0]*v[1] - u[1]*v[0]
-	];
+	if (!Array.isArray(u) || u.length !== 3 && (u.length !== 4 || u[3] !== 0)) { throw "cross(): first argument is not a vector of exactly 3"; }
+	if (!Array.isArray(v) || v.length !== 3 && (v.length !== 4 || v[3] !== 0)) { throw "cross(): second argument is not a vector of exactly 3"; }
+	if (u.length !== v.length) { throw "arguments must be the same length"; }
+	let a = u[1]*v[2] - u[2]*v[1], b = u[2]*v[0] - u[0]*v[2], c = u[0]*v[1] - u[1]*v[0]
+	return (u.length === 4 ? vec4 : vec3)(a, b, c, 0);
 }
 
 function normalize(u, excludeLastComponent) {
