@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Give the page a title - make sure it is descriptive! -->
+        <title>Cartoon Cube</title>
+
+        <!-- Load utilities and functions -->
+        <script src="../common/webgl-utils.js"></script>
+        <script src="../common/MV.js"></script>
+        <script src="../common/init-shaders.js"></script>
+        <script src="../common/objloader.js"></script>
+
+        <!-- Load the code for this example -->
+        <script src="lighting-nonphotorealistic.js"></script>
+
+        <style>
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            background: url(http://upload.wikimedia.org/wikipedia/commons/5/5d/Checker-16x16.png) repeat;
+        }
+
+        #toolbar {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 0.25em;
+            background-color: rgba(255,255,255,0.5);
+            text-align: right;
+            font-size: 0.75em;
+        }
+
+        select, button, input {
+            vertical-align: middle;
+        }
+
+        input[type="range"], input[type="number"] {
+            width: 40px;
+            text-align: right;
+        }
+
+        input[type="color"] {
+            height: 1em;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        input[type="color"]::-webkit-color-swatch, input[type="color"]::-moz-color-swatch {
+            border: none;
+        }
+
+        table th, table td {
+            text-align: center;
+        }
+        table th:first-child {
+            text-align: right;
+        }
+        </style>
+    </head>
+    <body>
+        <!-- Define the canvas to use for the WebGL example -->
+        <canvas id="gl-canvas" style="text-align:center;">
+            Your browser doesn't support HTML5 canvas element
+        </canvas>
+        <div id="toolbar">
+            <div>
+                <label for="viewing-mode">Perspective: <input type="checkbox" id="viewing-mode"></label>
+                <label for="light-in-model">Light Moves: <input type="checkbox" id="light-in-model"></label>
+            </div>
+            <div style="clear:both;">
+                <b>Light Position:</b>
+                <input type="number" id="x" value="1.0" step="0.1">
+                <input type="number" id="y" value="1.0" step="0.1">
+                <input type="number" id="z" value="-1.0" step="0.1">
+                <label for="pt_src">Point: <input type="checkbox" id="pt_src"></label>
+            </div>
+        </div>
+    </body>
+</html>
