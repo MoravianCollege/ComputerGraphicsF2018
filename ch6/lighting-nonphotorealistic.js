@@ -1,5 +1,4 @@
-// This is a WebGL example that draws a cube that has ambient, diffuse, and specular lighting only
-// with options for smooth vs flat shading, light attenuation, and separate color lighting
+// This is a WebGL example that draws a teapot with 'cartoon shading'.
 // components.
 /* exported cube tetrahedron */
 
