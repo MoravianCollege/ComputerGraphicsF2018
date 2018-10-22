@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Give the page a title - make sure it is descriptive! -->
+        <title>Sphere with Customizable Lighting</title>
+
+        <!-- Load utilities and functions -->
+        <script src="../common/webgl-utils.js"></script>
+        <script src="../common/MV.js"></script>
+        <script src="../common/init-shaders.js"></script>
+
+        <!-- Load the code for this example -->
+        <script src="sphere.js"></script>
+
+        <style>
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            background: url(http://upload.wikimedia.org/wikipedia/commons/5/5d/Checker-16x16.png) repeat;
+        }
+
+        #toolbar {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 0.25em;
+            background-color: rgba(255,255,255,0.5);
+            text-align: right;
+            font-size: 0.75em;
+        }
+
+        select, button, input {
+            vertical-align: middle;
+        }
+
+        input[type="range"], input[type="number"] {
+            width: 40px;
+            text-align: right;
+        }
+
+        input[type="color"] {
+            height: 1em;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        input[type="color"]::-webkit-color-swatch, input[type="color"]::-moz-color-swatch {
+            border: none;
+        }
+
+        table th, table td {
+            text-align: center;
+        }
+        table th:first-child {
+            text-align: right;
+        }
+        </style>
+    </head>
+    <body>
+        <!-- Define the canvas to use for the WebGL example -->
+        <canvas id="gl-canvas" style="text-align:center;">
+            Your browser doesn't support HTML5 canvas element
+        </canvas>
+        <div id="toolbar">
+            <div>
+                <label for="viewing-mode">Perspective: <input type="checkbox" id="viewing-mode"></label>
+                <label for="flat-shading">Flat Shading: <input type="checkbox" id="flat-shading"></label>
+                <label for="light-in-model">Light Moves: <input type="checkbox" id="light-in-model"></label>
+            </div>
+            <table style="float:right;">
+                <tr><th></th><th>Ambient</td><th>Diffuse</th><th>Specular</th></tr>
+                <tr><th>Material:</th><td><input type="color" id="mat-color-a" value="#00FF00"></td><td><input type="color" id="mat-color-d" value="#00FF00"></td><td><input type="color" id="mat-color-s" value="#00FF00"></td><td>Shininess:</td></tr>
+                <tr><th><i>k</i>:</th><td><input type="range" id="ka" value="0.2" min="0" max="1" step="0.05"></td><td><input type="range" id="kd" value="1.0" min="0" max="1" step="0.05"></td><td><input type="range" id="ks" value="1.0" min="0" max="1" step="0.05"></td><td><input type="number" id="shininess" value="20" min="0" step="0.5"></td></tr>
+                <tr><th>Light:</th><td><input type="color" id="light-color-a" value="#FFFFFF"></td><td><input type="color" id="light-color-d" value="#FFFFFF"></td><td><input type="color" id="light-color-s" value="#FFFFFF"></td></tr>
+                <tr><th>Brightness:</th><td><input type="number" id="bright-a" value="1" min="0" step="1"></td><td><input type="number" id="bright-d" value="1" min="0" step="1"></td><td><input type="number" id="bright-s" value="1" min="0" step="1"></td></tr>
+            </table>
+            <div style="clear:both;">
+                <b>Light Position:</b>
+                <input type="number" id="x" value="1.0" step="0.1">
+                <input type="number" id="y" value="1.0" step="0.1">
+                <input type="number" id="z" value="-1.0" step="0.1">
+                <label for="pt_src">Point: <input type="checkbox" id="pt_src"></label>
+                <br>
+                <b>Attenuation:</b> 1/(<input type="number" id="atten_a" value="1.00" min="0" step="0.05">
+                + <input type="number" id="atten_b" value="0.00" min="0" step="0.01"><i>d</i>
+                + <input type="number" id="atten_c" value="0.00" min="0" step="0.01"><i>d<sup>2</sup></i>)
+                <br>
+                <label for="light-model"><b>Light Model:</b> <select id="light-model"><option value="blinn">Blinn</option><option value="phong">Phong</option></select></label>
+            </div>
+        </div>
+    </body>
+</html>
