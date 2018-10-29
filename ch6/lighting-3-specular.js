@@ -99,7 +99,7 @@ window.addEventListener('load', function init() {
 			vec4 l = normalize(L);
 			vec4 v = normalize(V);
 
-			vec4 H = normalize(l + v);
+			vec4 h = normalize(l + v);
 			float d = max(dot(l, n), 0.0);
 			float s = (d == 0.0) ? 0.0 : pow(max(dot(n, h), 0.0), shininess);
 			gl_FragColor = ka*color*light + kd*d*color*light + ks*s*light;
