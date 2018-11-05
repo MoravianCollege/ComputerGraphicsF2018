@@ -21,7 +21,10 @@
         "lookAt": false,
         "ortho": false, "perspective": false,
         "loadFile": false, "compileShader": false, "linkProgram": false,
-        "load_obj": false
+        "load_obj": false,
+        "create_vertex_attr_buffer":false, "load_texture":false, "load_cubemap_texture":false,
+        "calc_normals":false, "generate_mesh":false,
+        "cube":false, "tetrahedron":false, "unit_sphere":false
     },
     "rules": {
         "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
