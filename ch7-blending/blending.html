@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Give the page a title - make sure it is descriptive! -->
+        <title>Bump Map Cube</title>
+
+        <!-- Load utilities and functions -->
+        <script src="../common/webgl-utils.js"></script>
+        <script src="../common/MV.js"></script>
+        <script src="../common/init-shaders.js"></script>
+
+        <!-- Load the code for this example -->
+        <script src="tools.js"></script>
+        <script src="blending.js"></script>
+
+        <style>
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            background: url(http://upload.wikimedia.org/wikipedia/commons/5/5d/Checker-16x16.png) repeat;
+        }
+        #toolbar {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 0.25em;
+            background-color: rgba(255,255,255,0.5);
+            text-align: right;
+            font-size: 0.75em;
+        }
+        select, button, input {
+            vertical-align: middle;
+        }
+        input[type="range"], input[type="number"] {
+            width: 40px;
+            text-align: right;
+        }
+        input[type="color"] {
+            height: 1em;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        input[type="color"]::-webkit-color-swatch, input[type="color"]::-moz-color-swatch {
+            border: none;
+        }
+        table th, table td {
+            text-align: center;
+        }
+        table th {
+            vertical-align: bottom;
+        }
+        </style>
+    </head>
+    <body>
+        <!-- Define the canvas to use for the WebGL example -->
+        <canvas id="gl-canvas" style="text-align:center;">
+            Your browser doesn't support HTML5 canvas element
+        </canvas>
+        <div id="toolbar">
+            <div>
+                <label for="viewing-mode">Perspective: <input type="checkbox" id="viewing-mode"></label>
+                <label for="culling">Culling: <select id="culling">
+                    <option value="NONE">none</option>
+                    <option value="BACK">back</option>
+                    <option value="FRONT">front</option>
+                </select></label><br>
+
+                <label for="both-sides">Light Both Sides: <input type="checkbox" id="both-sides"></label><br>
+
+                <label for="clear-color">Clear Color: <input type="color" id="clear-color" value="#000000"></label>
+                <label for="clear-alpha">&alpha;: <input type="range" id="clear-alpha" value="0.0" min="0" max="1" step="0.05"></label>
+                <br>
+
+                <table>
+                    <tr><th>Side</th><th>Color</th><th>&alpha;</th><th>Depth<br>Mask</th></tr>
+                    <tr><td>1</td><td><input type="color" id="side1-color" value="#FF0000"></td><td><input type="range" id="side1-alpha" value="0.5" min="0" max="1" step="0.05"></td><td><input type="checkbox" id="side1-depth-mask"></td></tr>
+                    <tr><td>2</td><td><input type="color" id="side2-color" value="#FFFF00"></td><td><input type="range" id="side2-alpha" value="0.5" min="0" max="1" step="0.05"></td><td><input type="checkbox" id="side2-depth-mask"></td></tr>
+                    <tr><td>3</td><td><input type="color" id="side3-color" value="#FF00FF"></td><td><input type="range" id="side3-alpha" value="0.5" min="0" max="1" step="0.05"></td><td><input type="checkbox" id="side3-depth-mask"></td></tr>
+                    <tr><td>4</td><td><input type="color" id="side4-color" value="#00FF00"></td><td><input type="range" id="side4-alpha" value="0.5" min="0" max="1" step="0.05"></td><td><input type="checkbox" id="side4-depth-mask"></td></tr>
+                    <tr><td>5</td><td><input type="color" id="side5-color" value="#00FFFF"></td><td><input type="range" id="side5-alpha" value="0.5" min="0" max="1" step="0.05"></td><td><input type="checkbox" id="side5-depth-mask"></td></tr>
+                    <tr><td>6</td><td><input type="color" id="side6-color" value="#0000FF"></td><td><input type="range" id="side6-alpha" value="0.5" min="0" max="1" step="0.05"></td><td><input type="checkbox" id="side6-depth-mask"></td></tr>
+                </table>
+
+                <label for="src-blend">Source Blend Func: <select id="src-blend">
+                    <option value="ZERO">0</option><option value="ONE" selected>1</option>
+                    <option value="SRC_ALPHA">src &alpha;</option>
+                    <option value="DST_ALPHA">dst &alpha;</option>
+                    <option value="ONE_MINUS_SRC_ALPHA">1 - src &alpha;</option>
+                    <option value="ONE_MINUS_DST_ALPHA">1 - dst &alpha;</option>
+                    <option value="SRC_COLOR">src color</option>
+                    <option value="DST_COLOR">dst color</option>
+                </select></label><br>
+
+                <label for="dst-blend">Dest Blend Func: <select id="dst-blend">
+                    <option value="ZERO">0</option><option value="ONE" selected>1</option>
+                    <option value="SRC_ALPHA">src &alpha;</option>
+                    <option value="DST_ALPHA">dst &alpha;</option>
+                    <option value="ONE_MINUS_SRC_ALPHA">1 - src &alpha;</option>
+                    <option value="ONE_MINUS_DST_ALPHA">1 - dst &alpha;</option>
+                    <option value="SRC_COLOR">src color</option>
+                    <option value="DST_COLOR">dst color</option>
+                </select></label><br>
+
+                <label for="blend-eq">Blend Eq: <select id="blend-eq">
+                    <option value="FUNC_ADD">src + dst</option>
+                    <option value="FUNC_SUBTRACT">src - dst</option>
+                    <option value="FUNC_REVERSE_SUBTRACT">dst - src</option>
+                </select></label>
+            </div>
+        </div>
+    </body>
+</html>
