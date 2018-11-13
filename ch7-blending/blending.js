@@ -1,5 +1,4 @@
 // This is a WebGL example that demonstrates blending and composition
-/* exported cube tetrahedron unit_sphere load_texture load_cubemap_texture */
 
 // Global WebGL context variable
 let gl;
@@ -38,6 +37,11 @@ window.addEventListener('load', function init() {
 	gl.clearColor(0.0, 0.0, 0.0, 0.0); // setup the background color with red, green, blue, and alpha
 	gl.enable(gl.DEPTH_TEST); // things further away will be hidden
 	gl.enable(gl.BLEND); // perform blending of fragments
+
+	// Enabling sample coverage can be used to increase quality:
+	//gl.enable(gl.SAMPLE_COVERAGE);
+	//gl.enable(gl.SAMPLE_ALPHA_TO_COVERAGE);
+	//gl.sampleCoverage(0.5, false);
 
 	// Create the shape
 	let verts = [];
