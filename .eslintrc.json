@@ -25,7 +25,8 @@
         "create_vertex_attr_buffer":false, "load_texture":false, "load_cubemap_texture":false,
         "create_texture":false, "render_to_texture":false, "render_to_screen":false,
         "calc_normals":false, "generate_mesh":false,
-        "cube":false, "tetrahedron":false, "unit_sphere":false
+        "cube":false, "tetrahedron":false, "unit_sphere":false,
+        "get_image_data": false
     },
     "rules": {
         "brace-style": ["error", "1tbs", { "allowSingleLine": true }],

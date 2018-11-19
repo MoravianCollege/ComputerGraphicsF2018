@@ -1,8 +1,25 @@
 // Various useful functions
+/* exported get_image_data */
 /* exported create_vertex_attr_buffer load_texture load_cubemap_texture */
 /* exported create_texture render_to_texture render_to_screen */
 /* exported calc_normals generate_mesh */
 /* exported cube tetrahedron unit_sphere */
+
+/**
+ * Gets the pixel data from a texture.
+ */
+function get_image_data(gl, texture) {
+	// Create a framebuffer backed by the texture
+	let framebuffer = gl.createFramebuffer();
+	gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+	gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+
+	// Read the contents of the framebuffer (data stores the pixel data)
+	let data = new Uint8Array(texture.width * texture.height * 4);
+	gl.readPixels(0, 0, texture.width, texture.height, gl.RGBA, gl.UNSIGNED_BYTE, data);
+	gl.deleteFramebuffer(framebuffer);
+	return data;
+}
 
 
 /**
