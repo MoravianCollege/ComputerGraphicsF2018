@@ -3,14 +3,16 @@
 // Global WebGL context variable
 let gl;
 
-// Of-Screen Buffers
+// Off-Screen Buffers
 let fb, rb, tex;
 
 // Global program variables
-let program1, program2, program3;
+let program1; // used to render off-screen
+let program2; // used to render unblurred
+let program3; // used to render blurred
 
 // Global buffer locations
-let buffer_1, buffer_2, buffer_3;
+let buffer1, buffer2, buffer3;
 
 // Global attribute locations
 let vPosition_loc_1, vPosition_loc_2, vPosition_loc_3;
@@ -43,7 +45,15 @@ window.addEventListener('load', function init() {
 			fTexCoord = vPosition.xy;
 		}
 	`);
+	// Fragment shader for off-screen rendering
 	let fragShdr1 = compileShader(gl, gl.FRAGMENT_SHADER, `
+		precision mediump float;
+		void main() {
+			gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+		}
+	`);
+	// Fragment shader for unblurred rendering
+	let fragShdr2 = compileShader(gl, gl.FRAGMENT_SHADER, `
 		precision mediump float;
 		uniform sampler2D texture;
 		varying vec2 fTexCoord;
@@ -51,12 +61,7 @@ window.addEventListener('load', function init() {
 			gl_FragColor = texture2D(texture, fTexCoord);
 		}
 	`);
-	let fragShdr2 = compileShader(gl, gl.FRAGMENT_SHADER, `
-		precision mediump float;
-		void main() {
-			gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
-		}
-	`);
+	// Fragment shader for blurry rendering
 	let fragShdr3 = compileShader(gl, gl.FRAGMENT_SHADER, `
 		precision mediump float;
 		uniform sampler2D texture;
@@ -84,15 +89,15 @@ window.addEventListener('load', function init() {
 	vPosition_loc_3 = gl.getAttribLocation(program3, 'vPosition');
 
 	// Set the texture number
-	gl.useProgram(program1);
-	gl.uniform1i(gl.getUniformLocation(program1, 'texture'), 0);
+	gl.useProgram(program2);
+	gl.uniform1i(gl.getUniformLocation(program2, 'texture'), 0);
 	gl.useProgram(program3);
 	gl.uniform1i(gl.getUniformLocation(program3, 'texture'), 0);
 
 	// Load the vertex data into the GPU and associate with shader
-	buffer_1 = create_vertex_attr_buffer(gl, program1, 'vPosition', sq_verts);
-	buffer_2 = create_vertex_attr_buffer(gl, program2, 'vPosition', tri_verts);
-	buffer_3 = create_vertex_attr_buffer(gl, program3, 'vPosition', sq_verts_2);
+	buffer1 = create_vertex_attr_buffer(gl, program1, 'vPosition', tri_verts);
+	buffer2 = create_vertex_attr_buffer(gl, program2, 'vPosition', sq_verts);
+	buffer3 = create_vertex_attr_buffer(gl, program3, 'vPosition', sq_verts_2);
 
 	// Off-screen buffers
 	fb = gl.createFramebuffer();
@@ -116,9 +121,9 @@ function render() {
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 	// Draw the green triangle to a texture
-	gl.useProgram(program2);
-	gl.bindBuffer(gl.ARRAY_BUFFER, buffer_2);
-	gl.vertexAttribPointer(vPosition_loc_2, 2, gl.FLOAT, false, 0, 0);
+	gl.useProgram(program1);
+	gl.bindBuffer(gl.ARRAY_BUFFER, buffer1);
+	gl.vertexAttribPointer(vPosition_loc_1, 2, gl.FLOAT, false, 0, 0);
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 3);
 
 	// Mipmaps must be re-generated after updating the data on the texture
@@ -131,14 +136,14 @@ function render() {
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 	// Draw the textured square to the screen
-	gl.useProgram(program1);
-	gl.bindBuffer(gl.ARRAY_BUFFER, buffer_1);
-	gl.vertexAttribPointer(vPosition_loc_1, 2, gl.FLOAT, false, 0, 0);
+	gl.useProgram(program2);
+	gl.bindBuffer(gl.ARRAY_BUFFER, buffer2);
+	gl.vertexAttribPointer(vPosition_loc_2, 2, gl.FLOAT, false, 0, 0);
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
 	// Draw the textured square to the screen
 	gl.useProgram(program3);
-	gl.bindBuffer(gl.ARRAY_BUFFER, buffer_3);
+	gl.bindBuffer(gl.ARRAY_BUFFER, buffer3);
 	gl.vertexAttribPointer(vPosition_loc_3, 2, gl.FLOAT, false, 0, 0);
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
