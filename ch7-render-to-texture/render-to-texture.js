@@ -1,4 +1,4 @@
-// This is a WebGL example that demonstrates multiple programs
+// This is a WebGL example that demonstrates rendering to a texture
 
 // Global WebGL context variable
 let gl;
