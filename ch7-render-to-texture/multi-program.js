@@ -66,12 +66,12 @@ window.addEventListener('load', function init() {
 	translation_loc_2 = gl.getUniformLocation(program2, 'translation');
 
 	// Get attribute locations
-	vPosition_loc_1 = gl.getAttribLocation(program1, 'vPosition');
-	vPosition_loc_2 = gl.getAttribLocation(program2, 'vPosition');
+	vPosition_loc_1 = enable_attribute(gl, program1, 'vPosition');
+	vPosition_loc_2 = enable_attribute(gl, program2, 'vPosition');
 
-	// Load the vertex data into the GPU and associate with shader
-	buffer_1 = create_vertex_attr_buffer(gl, program1, 'vPosition', sq_verts);
-	buffer_2 = create_vertex_attr_buffer(gl, program2, 'vPosition', tri_verts);
+	// Load the vertex data into the GPU
+	buffer_1 = create_buffer(gl, sq_verts);
+	buffer_2 = create_buffer(gl, tri_verts);
 
 	// Add the resize listener
 	window.addEventListener('resize', onResize);
@@ -90,15 +90,13 @@ function render() {
 	// Draw the red square
 	gl.useProgram(program1);
 	gl.uniform2f(translation_loc_1, 0.2, 0.2);
-	gl.bindBuffer(gl.ARRAY_BUFFER, buffer_1);
-	gl.vertexAttribPointer(vPosition_loc_1, 2, gl.FLOAT, false, 0, 0);
+	set_vertex_attr_buffer(gl, vPosition_loc_1, buffer_1, 2);
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
 	// Draw the green triangle
 	gl.useProgram(program2);
 	gl.uniform2f(translation_loc_2, -0.2, -0.2);
-	gl.bindBuffer(gl.ARRAY_BUFFER, buffer_2);
-	gl.vertexAttribPointer(vPosition_loc_2, 2, gl.FLOAT, false, 0, 0);
+	set_vertex_attr_buffer(gl, vPosition_loc_2, buffer_2, 2);
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 3);
 }
 

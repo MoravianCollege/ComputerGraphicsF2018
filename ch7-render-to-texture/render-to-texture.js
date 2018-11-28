@@ -7,15 +7,13 @@ let gl;
 let fb, rb, tex;
 
 // Global program variables
-let program1; // used to render off-screen
-let program2; // used to render unblurred
-let program3; // used to render blurred
+let program_green, program_blur, program_texture;
 
 // Global buffer locations
-let buffer1, buffer2, buffer3;
+let buffer_tri, buffer_sq1, buffer_sq2;
 
 // Global attribute locations
-let vPosition_loc_1, vPosition_loc_2, vPosition_loc_3;
+let vPosition_loc_green, vPosition_loc_blur, vPosition_loc_texture;
 
 window.addEventListener('load', function init() {
 	// Get the HTML5 canvas object from it's ID
@@ -45,15 +43,15 @@ window.addEventListener('load', function init() {
 			fTexCoord = vPosition.xy;
 		}
 	`);
-	// Fragment shader for off-screen rendering
-	let fragShdr1 = compileShader(gl, gl.FRAGMENT_SHADER, `
+	// Fragment shader for rendering in all-green
+	let fragShdr_green = compileShader(gl, gl.FRAGMENT_SHADER, `
 		precision mediump float;
 		void main() {
 			gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
 		}
 	`);
-	// Fragment shader for unblurred rendering
-	let fragShdr2 = compileShader(gl, gl.FRAGMENT_SHADER, `
+	// Fragment shader for rendering a texture plain
+	let fragShdr_texture = compileShader(gl, gl.FRAGMENT_SHADER, `
 		precision mediump float;
 		uniform sampler2D texture;
 		varying vec2 fTexCoord;
@@ -61,8 +59,8 @@ window.addEventListener('load', function init() {
 			gl_FragColor = texture2D(texture, fTexCoord);
 		}
 	`);
-	// Fragment shader for blurry rendering
-	let fragShdr3 = compileShader(gl, gl.FRAGMENT_SHADER, `
+	// Fragment shader for rendering a texture blurry
+	let fragShdr_blur = compileShader(gl, gl.FRAGMENT_SHADER, `
 		precision mediump float;
 		uniform sampler2D texture;
 		varying vec2 fTexCoord;
@@ -79,25 +77,25 @@ window.addEventListener('load', function init() {
 	`);
 
 	// Link the programs
-	program1 = linkProgram(gl, [vertShdr, fragShdr1]);
-	program2 = linkProgram(gl, [vertShdr, fragShdr2]);
-	program3 = linkProgram(gl, [vertShdr, fragShdr3]);
+	program_green = linkProgram(gl, [vertShdr, fragShdr_green]);
+	program_texture = linkProgram(gl, [vertShdr, fragShdr_texture]);
+	program_blur = linkProgram(gl, [vertShdr, fragShdr_blur]);
 
 	// Get attribute locations
-	vPosition_loc_1 = gl.getAttribLocation(program1, 'vPosition');
-	vPosition_loc_2 = gl.getAttribLocation(program2, 'vPosition');
-	vPosition_loc_3 = gl.getAttribLocation(program3, 'vPosition');
+	vPosition_loc_green = enable_attribute(gl, program_green, 'vPosition');
+	vPosition_loc_blur = enable_attribute(gl, program_blur, 'vPosition');
+	vPosition_loc_texture = enable_attribute(gl, program_texture, 'vPosition');
 
 	// Set the texture number
-	gl.useProgram(program2);
-	gl.uniform1i(gl.getUniformLocation(program2, 'texture'), 0);
-	gl.useProgram(program3);
-	gl.uniform1i(gl.getUniformLocation(program3, 'texture'), 0);
+	gl.useProgram(program_blur);
+	gl.uniform1i(gl.getUniformLocation(program_blur, 'texture'), 0);
+	gl.useProgram(program_texture);
+	gl.uniform1i(gl.getUniformLocation(program_texture, 'texture'), 0);
 
-	// Load the vertex data into the GPU and associate with shader
-	buffer1 = create_vertex_attr_buffer(gl, program1, 'vPosition', tri_verts);
-	buffer2 = create_vertex_attr_buffer(gl, program2, 'vPosition', sq_verts);
-	buffer3 = create_vertex_attr_buffer(gl, program3, 'vPosition', sq_verts_2);
+	// Load the vertex data into the GPU
+	buffer_tri = create_buffer(gl, tri_verts);
+	buffer_sq1 = create_buffer(gl, sq_verts);
+	buffer_sq2 = create_buffer(gl, sq_verts_2);
 
 	// Off-screen buffers
 	fb = gl.createFramebuffer();
@@ -121,9 +119,8 @@ function render() {
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 	// Draw the green triangle to a texture
-	gl.useProgram(program1);
-	gl.bindBuffer(gl.ARRAY_BUFFER, buffer1);
-	gl.vertexAttribPointer(vPosition_loc_1, 2, gl.FLOAT, false, 0, 0);
+	gl.useProgram(program_green);
+	set_vertex_attr_buffer(gl, vPosition_loc_green, buffer_tri, 2);
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 3);
 
 	// Mipmaps must be re-generated after updating the data on the texture
@@ -136,15 +133,13 @@ function render() {
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 	// Draw the textured square to the screen
-	gl.useProgram(program2);
-	gl.bindBuffer(gl.ARRAY_BUFFER, buffer2);
-	gl.vertexAttribPointer(vPosition_loc_2, 2, gl.FLOAT, false, 0, 0);
+	gl.useProgram(program_texture);
+	set_vertex_attr_buffer(gl, vPosition_loc_texture, buffer_sq1, 2);
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
 	// Draw the textured square to the screen
-	gl.useProgram(program3);
-	gl.bindBuffer(gl.ARRAY_BUFFER, buffer3);
-	gl.vertexAttribPointer(vPosition_loc_3, 2, gl.FLOAT, false, 0, 0);
+	gl.useProgram(program_blur);
+	set_vertex_attr_buffer(gl, vPosition_loc_blur, buffer_sq2, 2);
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
 	// Animate

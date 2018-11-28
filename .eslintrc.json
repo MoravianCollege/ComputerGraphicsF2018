@@ -23,6 +23,7 @@
         "loadFile": false, "compileShader": false, "linkProgram": false,
         "load_obj": false,
         "create_vertex_attr_buffer":false, "load_texture":false, "load_cubemap_texture":false,
+        "create_buffer":false, "enable_attribute":false, "set_vertex_attr_buffer":false,
         "create_texture":false, "render_to_texture":false, "render_to_screen":false,
         "calc_normals":false, "generate_mesh":false,
         "cube":false, "tetrahedron":false, "unit_sphere":false,

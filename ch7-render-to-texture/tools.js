@@ -1,6 +1,7 @@
 // Various useful functions
 /* exported get_image_data */
 /* exported create_vertex_attr_buffer load_texture load_cubemap_texture */
+/* exported create_buffer, enable_attribute, set_vertex_attr_buffer */
 /* exported create_texture render_to_texture render_to_screen */
 /* exported calc_normals generate_mesh */
 /* exported cube tetrahedron unit_sphere */
@@ -21,7 +22,6 @@ function get_image_data(gl, texture) {
 	return data;
 }
 
-
 /**
  * Creates a vertex attribute buffer for the given program and attribute with
  * the given name. If x is an array, it is used as the initial values in the
@@ -38,6 +38,39 @@ function create_vertex_attr_buffer(gl, program, name, x, n) {
 	gl.vertexAttribPointer(attrib_loc, is_array ? x[0].length : n, gl.FLOAT, false, 0, 0); // associate the buffer with the attributes making sure it knows its type
 	gl.enableVertexAttribArray(attrib_loc); // enable this set of data
 	return bufferId;
+}
+
+/**
+ * Creates a buffer with the given data. If x is an array, it is used as the
+ * initial values in the buffer. Otherwise it must be an integer and specifies
+ * the size of the buffer. In addition, if x is not an array, n must be provided
+ * which is the dimension of the data to be allocated eventually.
+ */
+function create_buffer(gl, x, n) {
+	let is_array = Array.isArray(x);
+	let buffer_id = gl.createBuffer(); // create a new buffer
+	gl.bindBuffer(gl.ARRAY_BUFFER, buffer_id); // bind to the new buffer
+	gl.bufferData(gl.ARRAY_BUFFER, is_array ? flatten(x) : (x*n*sizeof.vec2/2), gl.STATIC_DRAW); // load the flattened data into the buffer
+	return buffer_id;
+}
+
+/**
+ * Enables a vertex attribute buffer for the given program and attribute with
+ * the given name. Returns the attribute location.
+ */
+function enable_attribute(gl, program, name) {
+	let attrib_loc = gl.getAttribLocation(program, name); // get the vertex shader attribute location
+	gl.enableVertexAttribArray(attrib_loc); // enable this set of data
+	return attrib_loc;
+}
+
+/**
+ * Sets a vertex attribute to point to the given buffer. The number of elements
+ * per value (e.g. 4 for vec4s) is required as well.
+ */
+function set_vertex_attr_buffer(gl, attrib_loc, buffer_id, n) {
+	gl.bindBuffer(gl.ARRAY_BUFFER, buffer_id); // bind to the new buffer
+	gl.vertexAttribPointer(attrib_loc, n, gl.FLOAT, false, 0, 0); // associate the buffer with the attributes making sure it knows its type
 }
 
 /**
