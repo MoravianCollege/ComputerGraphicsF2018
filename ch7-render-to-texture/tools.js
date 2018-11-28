@@ -89,6 +89,9 @@ function render_to_texture(gl, framebuffer, renderbuffer, texture) {
 	if (status !== gl.FRAMEBUFFER_COMPLETE) {
 		throw "Framebuffer failed to complete: "+status;
 	}
+
+	// Make sure we are drawing to the entire texture
+	gl.viewport(0, 0, texture.width, texture.height);
 }
 
 /**
@@ -98,6 +101,9 @@ function render_to_screen(gl) {
 	// Bind to the defaults
 	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 	gl.bindRenderbuffer(gl.RENDERBUFFER, null);
+
+	// Make sure we are drawing to the entire canvas
+	gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 }
 
 /**
