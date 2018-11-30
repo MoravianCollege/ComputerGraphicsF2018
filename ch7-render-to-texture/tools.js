@@ -4,7 +4,7 @@
 /* exported create_buffer, enable_attribute, set_vertex_attr_buffer */
 /* exported create_texture render_to_texture render_to_screen */
 /* exported calc_normals generate_mesh */
-/* exported cube tetrahedron unit_sphere */
+/* exported cube tetrahedron unit_sphere sphere */
 
 /**
  * Gets the pixel data from a texture.
@@ -74,17 +74,24 @@ function set_vertex_attr_buffer(gl, attrib_loc, buffer_id, n) {
 }
 
 /**
- * Create a blank texture on the GPU. The width and height must be power-of-two. The image will be
- * flipped vertically and will support mipmapping. Optional arguments for index number to load into
- * (default #0) and magnification filter (default gl.LINEAR). Returns the texture object.
+ * Create a blank texture on the GPU. The width and height do not need to be
+ * powers-of-two (the settings will be changed to handle it). The image will be
+ * flipped vertically and will support mipmapping. Optional arguments for index
+ * number to load into (default #0) and magnification filter (default gl.LINEAR).
+ * Returns the texture object. Also, the old texture can be passed in which is
+ * then resized.
  */
-function create_texture(gl, w, h, idx, mag_filter) {
+function create_texture(gl, w, h, idx, mag_filter, old_tex) {
 	if (typeof idx === "undefined") { idx = 0; }
 	if (typeof mag_filter === "undefined") { mag_filter = gl.LINEAR; }
 
-	let texture = gl.createTexture(); // create a texture resource on the GPU
+	let have_old = (old_tex !== null && typeof old_tex !== "undefined");
+	let texture = have_old ? old_tex : gl.createTexture(); // create a texture resource on the GPU
+
 	gl.activeTexture(gl['TEXTURE'+idx]); // set the current texture that all following commands will apply to
 	gl.bindTexture(gl.TEXTURE_2D, texture); // assign our texture resource as the current texture
+
+	if (have_old && old_tex.width === w && old_tex.height === h) { return texture; }
 
 	// Create the image data of the texture
 	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
@@ -94,10 +101,18 @@ function create_texture(gl, w, h, idx, mag_filter) {
 	texture.width = w;
 	texture.height = h;
 
-	// Setup options for downsampling and upsampling the image data
-	gl.generateMipmap(gl.TEXTURE_2D);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, mag_filter);
+	// Setup options for downsampling, upsampling, and wrapping the texture data
+	if ((w && (w & (w - 1)) === 0) && (h && (h & (h - 1)) === 0)) {
+		// Dimensions are powers-of-two
+		gl.generateMipmap(gl.TEXTURE_2D);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, mag_filter);
+	} else {
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+	}
 
 	return texture;
 }
@@ -117,6 +132,7 @@ function render_to_texture(gl, framebuffer, renderbuffer, texture) {
 		gl.getRenderbufferParameter(gl.RENDERBUFFER, gl.RENDERBUFFER_HEIGHT) !== texture.height) {
 		gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, texture.width, texture.height);
 	}
+	gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, renderbuffer);
 	gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
 	let status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
 	if (status !== gl.FRAMEBUFFER_COMPLETE) {
@@ -295,6 +311,25 @@ function tetrahedron(a, b, c, d, verts, inds) {
 	let off = verts.length;
 	verts.push(a, b, c, d);
 	inds.push(off+0, off+1, off+2, off+3, off+0, off+1);
+}
+
+/**
+ * Create an approximate sphere with the given radius using vec3s.
+ */
+function sphere(r, verts, inds, num_subdivisions) {
+	// The unit sphere has 4 equidistant points at:
+	//    <0,0,-1>, <0,2*sqrt(2)/3,1/3>, <-sqrt(6)/3, -sqrt(2)/3, 1/3>, and <sqrt(6)/3, -sqrt(2)/3, 1/3>
+	let a = vec3(0.0, 0.0, -1.0);
+	let b = vec3(0.0, 0.94280904158, 0.33333333333);
+	let c = vec3(-0.81649658093, -0.4714045207, 0.33333333333);
+	let d = vec3( 0.81649658093, -0.4714045207, 0.33333333333);
+	let map = new Map();
+	let verts_start = verts.length;
+	divide_triangle(a, b, c, verts, inds, map, num_subdivisions);
+	divide_triangle(d, c, b, verts, inds, map, num_subdivisions);
+	divide_triangle(a, d, b, verts, inds, map, num_subdivisions);
+	divide_triangle(a, c, d, verts, inds, map, num_subdivisions);
+	for (let i = verts_start; i < verts.length; i++) { verts[i] = scale(r, normalize(verts[i])); }
 }
 
 /**
