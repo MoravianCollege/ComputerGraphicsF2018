@@ -31,7 +31,7 @@ window.addEventListener('load', function init() {
 	const canvas = document.getElementById('gl-canvas');
 
 	// Get the WebGL context (save into a global variable)
-	gl = WebGLUtils.create3DContext(canvas, {premultipliedAlpha:false, antialias:false});
+	gl = WebGLUtils.create3DContext(canvas, {premultipliedAlpha:false});
 	if (!gl) {
 		window.alert("WebGL isn't available");
 		return;
