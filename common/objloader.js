@@ -1,11 +1,13 @@
 /* exported load_obj */
-function load_obj(url, ondone, onerror) {
+function load_obj(url, ondone, onerror, ignore_normals) {
 	/**
 	 * Loads a Wavefront OBJ file asynchronously. The file is loaded from the
 	 * relative or absolute url given. Once the model has completely loaded
 	 * then the function ondone is called with the verts, texCoords, normals,
 	 * inds, and objs. If there is an error loading then onerror is called
-	 * (which defaults to just writing an error message in the console).
+	 * (which defaults to just writing an error message in the console). A final
+	 * optional argument is ignore_normals. If true, then normals in the file
+	 * will be completely ignored.
 	 *
 	 * For the ondone function, the arguments are as follows:
 	 *  - verts: array of vec3s
@@ -32,6 +34,7 @@ function load_obj(url, ondone, onerror) {
 	 * Taylor or B-splines.
 	 */
 	onerror = onerror || function () { console.error('Failed to load OBJ file '+url); };
+	ignore_normals = !!ignore_normals;
 	_load_file(url, function obj_loader() {
 		// Variables for dealing with vertices, normals, and texture coordinates
 		let vs = [], vns = [], vts = [];
@@ -43,6 +46,7 @@ function load_obj(url, ondone, onerror) {
 			// Gets the index of a v/t/n or creates a new one if it has never been used before
 			let s = v.toString()+';'+(t===null||typeof t==="undefined"?'':t.toString())+';'+(n===null||typeof t==="undefined"?'':n.toString());
 			if (!map.has(s)) {
+				console.log(s);
 				map.set(s, verts.length);
 				verts.push(v);
 				texCoords.push(t);
@@ -147,12 +151,14 @@ function load_obj(url, ondone, onerror) {
 				}
 			} else if (cmd === 'vn') {
 				// normal: vn # # #
-				if (args.length !== 3) {
-					console.warn('Bad vertex normal ('+url+','+(i+1)+')');
-				} else {
-					let x = +args[0], y = +args[1], z = +args[2];
-					if (isNaN(x) || isNaN(y) || isNaN(z)) { console.warn('Bad vertex normal values ('+url+','+(i+1)+')'); }
-					vns.push(vec3(x, y, z));
+				if (!ignore_normals) {
+					if (args.length !== 3) {
+						console.warn('Bad vertex normal ('+url+','+(i+1)+')');
+					} else {
+						let x = +args[0], y = +args[1], z = +args[2];
+						if (isNaN(x) || isNaN(y) || isNaN(z)) { console.warn('Bad vertex normal values ('+url+','+(i+1)+')'); }
+						vns.push(vec3(x, y, z));
+					}
 				}
 			} else if (cmd === 'vt') {
 				// normal: vt # # [0]
@@ -181,7 +187,7 @@ function load_obj(url, ondone, onerror) {
 					if (typeof type ==="undefined" || !type.test(args[1]) || !type.test(args[2])) {
 						console.warn('Bad face values ('+url+','+(i+1)+')');
 					} else {
-						let hasT = t === 1 || t === 3, hasN = t === 2 || t === 3;
+						let hasT = t === 1 || t === 3, hasN = !ignore_normals && (t === 2 || t === 3);
 						let a = args[0].split('/'), b = args[1].split('/'), c = args[2].split('/');
 
 						// Convert to numbers and adjust negative values and 1-indexing

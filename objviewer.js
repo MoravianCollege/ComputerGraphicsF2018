@@ -8,7 +8,7 @@
 //		Model middle is ... - means your model is not exactly at the origin which may effect your usage of it, can be fixed in Blender or in code
 //		The scale is ... - tells you the relative scale of the object
 
-const filename = 'Fussball.obj';
+const filename = 'TankFullUnScaled.obj';
 
 // Global WebGL context variable
 let gl;
@@ -122,7 +122,7 @@ window.addEventListener('load', function init() {
 
 		// Render the scene
 		render();
-	});
+	}, null, true);
 
 	// Setup the standard movement system
 	add_standard_handlers(program);
