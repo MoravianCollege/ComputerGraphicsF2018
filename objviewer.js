@@ -9,6 +9,7 @@
 //		The scale is ... - tells you the relative scale of the object
 
 const filename = 'TankFullUnScaled.obj';
+const IGNORE_NORMALS = true;
 
 // Global WebGL context variable
 let gl;
@@ -122,7 +123,7 @@ window.addEventListener('load', function init() {
 
 		// Render the scene
 		render();
-	}, null, true);
+	}, null, IGNORE_NORMALS);
 
 	// Setup the standard movement system
 	add_standard_handlers(program);

@@ -46,7 +46,6 @@ function load_obj(url, ondone, onerror, ignore_normals) {
 			// Gets the index of a v/t/n or creates a new one if it has never been used before
 			let s = v.toString()+';'+(t===null||typeof t==="undefined"?'':t.toString())+';'+(n===null||typeof t==="undefined"?'':n.toString());
 			if (!map.has(s)) {
-				console.log(s);
 				map.set(s, verts.length);
 				verts.push(v);
 				texCoords.push(t);
