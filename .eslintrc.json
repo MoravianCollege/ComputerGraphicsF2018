@@ -27,7 +27,14 @@
         "create_texture":false, "render_to_texture":false, "render_to_screen":false,
         "calc_normals":false, "generate_mesh":false,
         "cube":false, "tetrahedron":false, "unit_sphere":false, "sphere":false,
-        "get_image_data": false
+        "get_image_data": false,
+
+        "Node": false, "Perspective": false, "Orthographic": false,
+        "Value": false, "ElementValue": false, "get_value": false,
+        "MatrixTransformation": false, "Translation": false, "Scale": false,
+        "XRotation": false, "YRotation": false, "ZRotation": false, "EulerRotation": false, "AxisRotation": false,
+        "SetIntUniform": false, "SetFloatUniform": false, "SetVecUniform": false, "SetMatUniform": false,
+        "DrawElements": false, "Cube": false, "Sphere": false
     },
     "rules": {
         "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
