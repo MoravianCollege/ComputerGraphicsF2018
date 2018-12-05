@@ -40,10 +40,11 @@ window.addEventListener('load', function init() {
 	// Add the parts in a scene graph
 	scene = new Perspective();
 	scene.
-		add_child(new Translation(vec3(0, -0.25, -2))).
+		add_child(new Translation(vec3(0, -0.25, -2))). // move away from the camera
 		add_child(new SetVecUniform('color', vec3(0.6, 0.6, 0.6))).
 		add_child(new YRotation(new ElementValue('base-angle'))).
 		add_child(base);
+	// Red arm
 	base.
 		add_child(new SetVecUniform('color', vec3(1.0, 0.1, 0.1))).
 		add_child(new Translation(vec3(0,BASE_HEIGHT,0))).
@@ -52,6 +53,7 @@ window.addEventListener('load', function init() {
 		add_child(new Translation(vec3(0,ARM1_LENGTH,0))).
 		add_child(new ZRotation(new ElementValue('upper-angle'))).
 		add_child(upper);
+	// Green arm
 	let lower2 = lower.copy(); // copy re-uses the data from the previous one
 	let upper2 = upper.copy();
 	base.
