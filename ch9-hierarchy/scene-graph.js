@@ -285,7 +285,7 @@ function Cube(pt1, pt2, verts, inds) {
 }
 Cube.prototype = Object.create(DrawElements.prototype);
 
-// Draw a spher that has the given center and radius. The number of subdivisions
+// Draw a sphere that has the given center and radius. The number of subdivisions
 // defaults to 4 (which is 1024 triangles).
 function Sphere(center, radius, verts, inds, num_subdivisions) {
 	if (typeof num_subdivisions === "undefined") { num_subdivisions = 4; }
